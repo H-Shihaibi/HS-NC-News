@@ -61,7 +61,7 @@ describe("GET /api/articles/:article_id", () => {
 });
 
 describe("GET /api/users", () => {
-  test.only("status:200, responds with an array of users objects", () => {
+  test("status:200, responds with an array of users objects", () => {
     return request(app)
       .get("/api/users")
       .expect(200)
