@@ -1,5 +1,8 @@
 const express = require("express");
-const { getArticleById } = require("./controllers/articles-controller");
+const {
+  getArticleById,
+  patchArticleVotesById,
+} = require("./controllers/articles-controller");
 const { getTopics } = require("./controllers/topics-controller");
 const { getUsers } = require("./controllers/users-controller");
 const {
@@ -10,11 +13,15 @@ const {
 
 const app = express();
 
+app.use(express.json());
+
 app.get("/api/topics", getTopics);
 
 app.get("/api/articles/:article_id", getArticleById);
 
 app.get("/api/users", getUsers);
+
+app.patch("/api/articles/:article_id", patchArticleVotesById);
 
 app.use(handleCustomErrors);
 app.use(handlePsqlErrors);

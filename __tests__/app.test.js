@@ -61,7 +61,7 @@ describe("GET /api/articles/:article_id", () => {
 });
 
 describe("GET /api/users", () => {
-  test.only("status:200, responds with an array of users objects", () => {
+  test("status:200, responds with an array of users objects", () => {
     return request(app)
       .get("/api/users")
       .expect(200)
@@ -78,6 +78,54 @@ describe("GET /api/users", () => {
             })
           );
         });
+      });
+  });
+});
+
+describe("PATCH /api/articles/:article_id", () => {
+  test("201: update votes count, respond with newly updated article", () => {
+    const updateVotes = {
+      votes: +1,
+    };
+    return request(app)
+      .patch("/api/articles/3")
+      .send(updateVotes)
+      .expect(200)
+      .then((res) => {
+        const { body } = res;
+        expect(body.article).toEqual({
+          ...body.article,
+        });
+      });
+  });
+
+  test("201: update votes count, respond with newly updated article", () => {
+    const updateVotes = {
+      votes: -99,
+    };
+    return request(app)
+      .patch("/api/articles/1")
+      .send(updateVotes)
+      .expect(200)
+      .then((res) => {
+        const { body } = res;
+        expect(body.article).toEqual({
+          ...body.article,
+        });
+        expect(body.article.votes).toBe(1);
+      });
+  });
+  test("status:404, article not found", () => {
+    const updateVotes = {
+      votes: +9,
+    };
+    return request(app)
+      .patch("/api/articles/19")
+      .send(updateVotes)
+      .expect(404)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toEqual("No article found for article_id : 19");
       });
   });
 });
