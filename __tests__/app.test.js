@@ -57,6 +57,16 @@ describe("GET /api/articles/:article_id", () => {
         expect(msg).toEqual("Invalid data type");
       });
   });
+  test("status:404, article not found", () => {
+    const ARTICLE_ID = "68";
+    return request(app)
+      .get(`/api/articles/${ARTICLE_ID}`)
+      .expect(404)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toEqual("No article found for article_id : 68");
+      });
+  });
 });
 
 describe("GET /api/users", () => {
@@ -84,7 +94,16 @@ describe("GET /api/users", () => {
 describe("PATCH /api/articles/:article_id", () => {
   test("201: update votes count, respond with newly updated article", () => {
     const updateVotes = {
-      votes: +1,
+      votes: 1,
+    };
+    const articleThree = {
+      article_id: 3,
+      title: "Eight pug gifs that remind me of mitch",
+      topic: "mitch",
+      author: "icellusedkars",
+      body: "some gifs",
+      created_at: "2020-11-03T09:12:00.000Z",
+      votes: 1,
     };
     return request(app)
       .patch("/api/articles/3")
@@ -92,15 +111,22 @@ describe("PATCH /api/articles/:article_id", () => {
       .expect(200)
       .then((res) => {
         const { body } = res;
-        expect(body.article).toEqual({
-          ...body.article,
-        });
+        expect(body.article).toEqual(articleThree);
       });
   });
 
   test("201: update votes count, respond with newly updated article", () => {
     const updateVotes = {
-      votes: -99,
+      votes: -98,
+    };
+    const articleOne = {
+      article_id: 1,
+      title: "Living in the shadow of a great man",
+      topic: "mitch",
+      author: "butter_bridge",
+      body: "I find this existence challenging",
+      created_at: "2020-07-09T20:11:00.000Z",
+      votes: 2,
     };
     return request(app)
       .patch("/api/articles/1")
@@ -108,15 +134,13 @@ describe("PATCH /api/articles/:article_id", () => {
       .expect(200)
       .then((res) => {
         const { body } = res;
-        expect(body.article).toEqual({
-          ...body.article,
-        });
-        expect(body.article.votes).toBe(1);
+        expect(body.article).toEqual(articleOne);
+        expect(body.article.votes).toBe(2);
       });
   });
   test("status:404, article not found", () => {
     const updateVotes = {
-      votes: +9,
+      votes: 9,
     };
     return request(app)
       .patch("/api/articles/19")
