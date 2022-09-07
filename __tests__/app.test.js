@@ -45,7 +45,6 @@ describe("GET /api/articles/:article_id", () => {
           created_at: "2020-10-16T05:03:00.000Z",
           votes: 0,
         });
-        expect().toBe();
       });
   });
   test("status:400, responds with a invalid input", () => {
