@@ -194,3 +194,184 @@ describe("GET /api/articles/:article_id", () => {
       });
   });
 });
+
+describe("GET /api/articles", () => {
+  test("status:200, responds with an array of articles objects", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toBeInstanceOf(Array);
+        expect(articles).toHaveLength(12);
+        articles.forEach((article) => {
+          expect(article).toEqual(
+            expect.objectContaining({
+              article_id: expect.any(Number),
+              author: expect.any(String),
+              body: expect.any(String),
+              comment_count: expect.any(String),
+              created_at: expect.any(String),
+              title: expect.any(String),
+              topic: expect.any(String),
+              votes: expect.any(Number),
+            })
+          );
+        });
+      });
+  });
+});
+
+describe("GET /api/articles", () => {
+  test("status:200, responds with an array of articles objects in DESC created_at order", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        const articlesDesc = [
+          {
+            article_id: 3,
+            author: "icellusedkars",
+            body: "some gifs",
+            comment_count: "2",
+            created_at: "2020-11-03T09:12:00.000Z",
+            title: "Eight pug gifs that remind me of mitch",
+            topic: "mitch",
+            votes: 0,
+          },
+          {
+            article_id: 6,
+            author: "icellusedkars",
+            body: "Delicious tin of cat food",
+            comment_count: "1",
+            created_at: "2020-10-18T01:00:00.000Z",
+            title: "A",
+            topic: "mitch",
+            votes: 0,
+          },
+
+          {
+            article_id: 2,
+            author: "icellusedkars",
+            body: "Call me Mitchell. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would buy a laptop about a little and see the codey part of the world. It is a way I have of driving off the spleen and regulating the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and bringing up the rear of every funeral I meet; and especially whenever my hypos get such an upper hand of me, that it requires a strong moral principle to prevent me from deliberately stepping into the street, and methodically knocking people’s hats off—then, I account it high time to get to coding as soon as I can. This is my substitute for pistol and ball. With a philosophical flourish Cato throws himself upon his sword; I quietly take to the laptop. There is nothing surprising in this. If they but knew it, almost all men in their degree, some time or other, cherish very nearly the same feelings towards the the Vaio with me.",
+            comment_count: "0",
+            created_at: "2020-10-16T05:03:00.000Z",
+            title: "Sony Vaio; or, The Laptop",
+            topic: "mitch",
+            votes: 0,
+          },
+
+          {
+            article_id: 12,
+            author: "butter_bridge",
+            body: "Have you seen the size of that thing?",
+            comment_count: "0",
+            created_at: "2020-10-11T11:24:00.000Z",
+            title: "Moustache",
+            topic: "mitch",
+            votes: 0,
+          },
+
+          {
+            article_id: 5,
+            author: "rogersop",
+            body: "Bastet walks amongst us, and the cats are taking arms!",
+            comment_count: "2",
+            created_at: "2020-08-03T13:14:00.000Z",
+            title: "UNCOVERED: catspiracy to bring down democracy",
+            topic: "cats",
+            votes: 0,
+          },
+
+          {
+            article_id: 1,
+            author: "butter_bridge",
+            body: "I find this existence challenging",
+            comment_count: "11",
+            created_at: "2020-07-09T20:11:00.000Z",
+            title: "Living in the shadow of a great man",
+            topic: "mitch",
+            votes: 100,
+          },
+
+          {
+            article_id: 9,
+            author: "butter_bridge",
+            body: "Well? Think about it.",
+            comment_count: "2",
+            created_at: "2020-06-06T09:10:00.000Z",
+            title: "They're not exactly dogs, are they?",
+            topic: "mitch",
+            votes: 0,
+          },
+
+          {
+            article_id: 10,
+            author: "rogersop",
+            body: "Who are we kidding, there is only one, and it's Mitch!",
+            comment_count: "0",
+            created_at: "2020-05-14T04:15:00.000Z",
+            title: "Seven inspirational thought leaders from Manchester UK",
+            topic: "mitch",
+            votes: 0,
+          },
+
+          {
+            article_id: 4,
+            author: "rogersop",
+            body: "We all love Mitch and his wonderful, unique typing style. However, the volume of his typing has ALLEGEDLY burst another students eardrums, and they are now suing for damages",
+            comment_count: "0",
+            created_at: "2020-05-06T01:14:00.000Z",
+            title: "Student SUES Mitch!",
+            topic: "mitch",
+            votes: 0,
+          },
+
+          {
+            article_id: 8,
+            author: "icellusedkars",
+            body: "Archaeologists have uncovered a gigantic statue from the dawn of humanity, and it has an uncanny resemblance to Mitch. Surely I am not the only person who can see this?!",
+            comment_count: "0",
+            created_at: "2020-04-17T01:08:00.000Z",
+            title: "Does Mitch predate civilisation?",
+            topic: "mitch",
+            votes: 0,
+          },
+
+          {
+            article_id: 11,
+            author: "icellusedkars",
+            body: "Having run out of ideas for articles, I am staring at the wall blankly, like a cat. Does this make me a cat?",
+            comment_count: "0",
+            created_at: "2020-01-15T22:21:00.000Z",
+            title: "Am I a cat?",
+            topic: "mitch",
+            votes: 0,
+          },
+
+          {
+            article_id: 7,
+            author: "icellusedkars",
+            body: "I was hungry.",
+            comment_count: "0",
+            created_at: "2020-01-07T14:08:00.000Z",
+            title: "Z",
+            topic: "mitch",
+            votes: 0,
+          },
+        ];
+        expect(articles).toEqual(articlesDesc);
+      });
+  });
+  test("status:404, topic not found", () => {
+    const topic = "crepuscular";
+    return request(app)
+      .get(`/api/articles?topic=${topic}`)
+      .expect(404)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toEqual("No topic found for crepuscular");
+      });
+  });
+});

@@ -40,20 +40,46 @@ exports.updateArticleVotesById = (articleId, newVotesCount) => {
     });
 };
 
-exports.selectArticleCommentCount = (article_id) => {
-  const arrValues = [article_id];
-  return db
-    .query(
-      "SELECT * FROM articles JOIN comments ON articles.article_id = comments.article_id WHERE article_id = $1;",
-      arrValues
-    )
-    .then(({ rows }) => {
-      if (rows.length === 0) {
-        return Promise.reject({
-          status: 404,
-          msg: `No article found for article_id : ${article_id}`,
-        });
-      }
-      return rows[0];
-    });
+exports.selectArticles = (topic) => {
+  const arrValues = [topic];
+  if (topic === undefined) {
+    return db
+      .query(
+        `SELECT articles.*, Count(comments.comment_id) AS comment_count FROM articles
+    LEFT JOIN comments
+    ON comments.article_id = articles.article_id
+    GROUP BY articles.article_id
+    ORDER BY created_at DESC
+    ;`
+      )
+      .then(({ rows }) => {
+        if (rows.length === 0) {
+          return Promise.reject({
+            status: 404,
+            msg: `No topic found for ${topic}`,
+          });
+        }
+        return rows;
+      });
+  } else {
+    return db
+      .query(
+        `SELECT articles.*, Count(comments.comment_id) AS comment_count FROM articles
+    LEFT JOIN comments
+    ON comments.article_id = articles.article_id
+    WHERE articles.topic = $1
+    GROUP BY articles.article_id
+    ORDER BY created_at DESC;`,
+        arrValues
+      )
+      .then(({ rows }) => {
+        if (rows.length === 0) {
+          return Promise.reject({
+            status: 404,
+            msg: `No topic found for ${topic}`,
+          });
+        }
+        return rows;
+      });
+  }
 };
