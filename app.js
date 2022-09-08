@@ -1,13 +1,31 @@
 const express = require("express");
+const {
+  getArticleById,
+  patchArticleVotesById,
+  getArticleCommentCount,
+} = require("./controllers/articles-controller");
 const { getTopics } = require("./controllers/topics-controller");
+const { getUsers } = require("./controllers/users-controller");
+const {
+  handleCustomErrors,
+  handlePsqlErrors,
+  handleServerErrors,
+} = require("./errors/errors");
 
 const app = express();
 
+app.use(express.json());
+
 app.get("/api/topics", getTopics);
 
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.sendStatus(500);
-});
+app.get("/api/articles/:article_id", getArticleById);
+
+app.get("/api/users", getUsers);
+
+app.patch("/api/articles/:article_id", patchArticleVotesById);
+
+app.use(handleCustomErrors);
+app.use(handlePsqlErrors);
+app.use(handleServerErrors);
 
 module.exports = app;
