@@ -92,7 +92,7 @@ describe("GET /api/users", () => {
   });
 });
 
-describe("PATCH /api/articles/:article_id", () => {
+describe.skip("PATCH /api/articles/:article_id", () => {
   test("201: update votes count, respond with newly updated article", () => {
     const updateVotes = {
       votes: 1,
@@ -150,47 +150,6 @@ describe("PATCH /api/articles/:article_id", () => {
       .then(({ body }) => {
         const { msg } = body;
         expect(msg).toEqual("No article found for article_id : 19");
-      });
-  });
-});
-
-describe("GET /api/articles/:article_id", () => {
-  test("status:200, responds with a single matching article that includes comments count", () => {
-    const ARTICLE_ID = 10;
-    const articleTen = {
-      article_id: ARTICLE_ID,
-      title: "Seven inspirational thought leaders from Manchester UK",
-      topic: "mitch",
-      author: "rogersop",
-      body: "Who are we kidding, there is only one, and it's Mitch!",
-      comment_count: "0",
-      created_at: "2020-05-14T04:15:00.000Z",
-      votes: 0,
-    };
-    return request(app)
-      .get(`/api/articles/${ARTICLE_ID}`)
-      .expect(200)
-      .then(({ body }) => {
-        expect(body.article).toEqual(articleTen);
-      });
-  });
-  test("status:200, responds with a single matching article that includes comments count", () => {
-    const ARTICLE_ID = 1;
-    const articleOne = {
-      article_id: 1,
-      title: "Living in the shadow of a great man",
-      topic: "mitch",
-      author: "butter_bridge",
-      body: "I find this existence challenging",
-      comment_count: "11",
-      created_at: "2020-07-09T20:11:00.000Z",
-      votes: 100,
-    };
-    return request(app)
-      .get(`/api/articles/${ARTICLE_ID}`)
-      .expect(200)
-      .then(({ body }) => {
-        expect(body.article).toEqual(articleOne);
       });
   });
 });

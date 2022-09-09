@@ -2,7 +2,6 @@ const express = require("express");
 const {
   getArticleById,
   patchArticleVotesById,
-  getArticleCommentCount,
 } = require("./controllers/articles-controller");
 const { getTopics } = require("./controllers/topics-controller");
 const { getUsers } = require("./controllers/users-controller");

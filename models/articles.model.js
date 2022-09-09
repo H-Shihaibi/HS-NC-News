@@ -39,21 +39,3 @@ exports.updateArticleVotesById = (articleId, newVotesCount) => {
       return rows[0];
     });
 };
-
-exports.selectArticleCommentCount = (article_id) => {
-  const arrValues = [article_id];
-  return db
-    .query(
-      "SELECT * FROM articles JOIN comments ON articles.article_id = comments.article_id WHERE article_id = $1;",
-      arrValues
-    )
-    .then(({ rows }) => {
-      if (rows.length === 0) {
-        return Promise.reject({
-          status: 404,
-          msg: `No article found for article_id : ${article_id}`,
-        });
-      }
-      return rows[0];
-    });
-};

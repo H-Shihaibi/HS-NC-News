@@ -1,7 +1,6 @@
 const {
   selectArticleById,
   updateArticleVotesById,
-  selectArticleCommentCount,
 } = require("../models/articles.model");
 
 exports.getArticleById = (req, res, next) => {
