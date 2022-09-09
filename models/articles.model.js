@@ -106,3 +106,22 @@ exports.selectArticleComments = (article_id) => {
       return rows;
     });
 };
+
+exports.addComment = (article_id, username, body) => {
+  const arrValues = [article_id, username, body];
+  return db
+    .query(
+      `INSERT INTO comments (article_id, author, body) VALUES ($1, $2, $3) RETURNING *;
+      `,
+      arrValues
+    )
+    .then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: `No article found for article_id : ${article_id}`,
+        });
+      }
+      return rows[0];
+    });
+};

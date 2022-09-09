@@ -4,6 +4,7 @@ const {
   patchArticleVotesById,
   getArticles,
   getArticleComments,
+  postComment,
 } = require("./controllers/articles-controller");
 const { getTopics } = require("./controllers/topics-controller");
 const { getUsers } = require("./controllers/users-controller");
@@ -28,6 +29,8 @@ app.patch("/api/articles/:article_id", patchArticleVotesById);
 app.get("/api/articles", getArticles);
 
 app.get("/api/articles/:article_id/comments", getArticleComments);
+
+app.post("/api/articles/:article_id/comments", postComment);
 
 app.use(handleCustomErrors);
 app.use(handlePsqlErrors);

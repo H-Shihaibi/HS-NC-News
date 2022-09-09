@@ -116,7 +116,7 @@ describe("PATCH /api/articles/:article_id", () => {
       });
   });
 
-  test("201: update votes count, respond with newly updated article", () => {
+  test("200: update votes count, respond with newly updated article", () => {
     const updateVotes = {
       votes: -98,
     };
@@ -435,6 +435,61 @@ describe("GET /api/articles/:article_id/comments", () => {
     const ARTICLE_ID = "not a number";
     return request(app)
       .get(`/api/articles/${ARTICLE_ID}/comments`)
+      .expect(400)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toEqual("Invalid data type");
+      });
+  });
+});
+
+describe("POST /api/articles/:article_id/comments", () => {
+  test("201: posts new comment, respond with the posted comment", () => {
+    const ARTICLE_ID = 1;
+    const newComment = {
+      username: "rogersop",
+      body: "Im definetely not a cat",
+    };
+    return request(app)
+      .post(`/api/articles/${ARTICLE_ID}/comments`)
+      .send(newComment)
+      .expect(201)
+      .then((res) => {
+        const { body } = res;
+        expect(body.addedComment).toEqual({
+          article_id: 1,
+          author: "rogersop",
+          body: "Im definetely not a cat",
+          comment_id: 19,
+          created_at: body.addedComment.created_at,
+          votes: 0,
+        });
+      });
+  });
+  test("status:404, article not found", () => {
+    const ARTICLE_ID = 20;
+    const newComment = {
+      username: "rogersop",
+      body: "Maybe I am a cat",
+    };
+    return request(app)
+      .post(`/api/articles/${ARTICLE_ID}/comments`)
+      .send(newComment)
+      .expect(404)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toEqual("Article or Topic not found");
+      });
+  });
+  test("status:400, invalid input", () => {
+    const ARTICLE_ID = "no number";
+    const newComment = {
+      username: "rogersop",
+      body: "Can I climb trees?",
+    };
+    return request(app)
+      .post(`/api/articles/${ARTICLE_ID}/comments`)
+      .send(newComment)
       .expect(400)
       .then(({ body }) => {
         const { msg } = body;
