@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const {
   getArticleById,
   patchArticleVotesById,
@@ -13,6 +14,8 @@ const {
   handlePsqlErrors,
   handleServerErrors,
 } = require("./errors/errors");
+
+app.use(cors());
 
 const app = express();
 
