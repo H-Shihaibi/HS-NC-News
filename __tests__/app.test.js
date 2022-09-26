@@ -92,7 +92,7 @@ describe("GET /api/users", () => {
   });
 });
 
-describe.skip("PATCH /api/articles/:article_id", () => {
+describe("PATCH /api/articles/:article_id", () => {
   test("201: update votes count, respond with newly updated article", () => {
     const updateVotes = {
       votes: 1,
